@@ -1,5 +1,5 @@
 import svgPaths from "./svg-8dn7ashjpm";
-import imgRectangle5 from "figma:asset/636fae99185154669553f6ac4f39d2a03a2c256c.png";
+import imgRectangle5 from "@/assets/636fae99185154669553f6ac4f39d2a03a2c256c.png";
 
 function Greeting() {
   return (

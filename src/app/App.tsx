@@ -6,7 +6,8 @@ import { SoundPickerModal } from '@/app/components/SoundPickerModal';
 import { Waves } from '@/components/ui/wave-background';
 import BlurTextAnimation from '@/components/ui/blur-text-animation';
 import Home from '@/imports/Home-7-86';
-import mood2Image from 'figma:asset/d0fce7ad287e0b2ca22377f22ff629fcdd4a6726.png';
+import mood2Image from '@/assets/d0fce7ad287e0b2ca22377f22ff629fcdd4a6726.png';
+import { hapticSounds } from '@/app/hooks/useHapticSound';
 
 interface Song {
   id: string;
@@ -169,6 +170,7 @@ export default function App() {
     if (longPressTimerRef.current) clearTimeout(longPressTimerRef.current);
     longPressTimerRef.current = setTimeout(() => {
       isLongPressRef.current = true;
+      hapticSounds.click();
       setShowSoundPicker(true);
     }, 800); // 800ms for long press
   };
@@ -251,6 +253,7 @@ export default function App() {
   };
 
   const handleOpenSoundPicker = () => {
+    hapticSounds.click();
     setShowSoundPicker(true);
   };
 

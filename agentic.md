@@ -173,6 +173,35 @@ VOLUME 70%
 ```
 Styled with backdrop blur, minimal presence.
 
+### Haptic UI Sounds
+
+The app includes subtle mechanical sounds that reinforce the "physical device" feel.
+
+**Implementation:** `src/app/hooks/useHapticSound.ts`
+
+| Sound | Use Case | Character |
+|-------|----------|-----------|
+| `click` | Play/pause, todo complete, open sound picker | Sharp, mechanical switch |
+| `tick` | Volume dial rotation (throttled) | Dial detent click |
+| `thud` | Enter focus mode (timer selection) | Soft confirmation |
+| `pop` | Add new todo | Light, satisfying |
+
+**Guidelines:**
+- Sounds are very short (8-80ms) and quiet
+- Generated via Web Audio API (no external files)
+- Volume dial ticks are throttled (every 5% change)
+- Sounds should feel **inevitable**, not decorative
+
+**When to add haptic sounds:**
+- Physical interactions (knobs, switches, dials)
+- State confirmations (completing an action)
+
+**When NOT to add haptic sounds:**
+- Hover states
+- Navigation
+- Passive state changes
+- Anything that would create sound spam
+
 ---
 
 ## 8. Tasks (Very Important Constraints)
@@ -416,6 +445,7 @@ If it asks for attention, **don't build it**.
 | `src/app/components/TimerSelector.tsx` | Timer duration selection (hold to select) |
 | `src/app/components/HomeWrapper.tsx` | Main UI wrapper |
 | `src/app/components/SoundPickerModal.tsx` | Sound selection modal |
+| `src/app/hooks/useHapticSound.ts` | Mechanical UI sound effects |
 | `src/imports/Home-7-86.tsx` | Main Home UI (Figma generated) |
 | `src/styles/tailwind.css` | Tailwind configuration |
 | `src/styles/theme.css` | Theme variables |

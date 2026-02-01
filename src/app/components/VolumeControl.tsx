@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import svgPaths from "@/imports/svg-4pi4cjtd6l";
+import { hapticSounds } from '@/app/hooks/useHapticSound';
 
 interface VolumeControlProps {
   isPlaying: boolean;
@@ -150,9 +151,11 @@ export function VolumeControl({ isPlaying, volume, onPlayPauseClick, onVolumeCha
     e.preventDefault();
     e.stopPropagation();
     setIsDragging(true);
+    hapticSounds.resetVolumeTick();
     (e.target as HTMLElement).setPointerCapture(e.pointerId);
     
     const newVolume = calculateVolumeFromPoint(e.clientX, e.clientY);
+    hapticSounds.volumeTick(newVolume);
     onVolumeChange(Math.max(0, Math.min(1, newVolume)));
   };
 
@@ -173,6 +176,7 @@ export function VolumeControl({ isPlaying, volume, onPlayPauseClick, onVolumeCha
 
     e.preventDefault();
     const newVolume = calculateVolumeFromPoint(e.clientX, e.clientY);
+    hapticSounds.volumeTick(newVolume);
     onVolumeChange(Math.max(0, Math.min(1, newVolume)));
   };
 
@@ -186,6 +190,7 @@ export function VolumeControl({ isPlaying, volume, onPlayPauseClick, onVolumeCha
       e.preventDefault();
       e.stopPropagation();
       setIsDragging(false);
+      hapticSounds.resetVolumeTick();
       (e.target as HTMLElement).releasePointerCapture(e.pointerId);
     }
   };
@@ -194,6 +199,7 @@ export function VolumeControl({ isPlaying, volume, onPlayPauseClick, onVolumeCha
     if (hasMoved.current) return;
     e.preventDefault();
     e.stopPropagation();
+    hapticSounds.click();
     onPlayPauseClick();
   };
 

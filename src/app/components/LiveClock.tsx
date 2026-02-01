@@ -33,13 +33,15 @@ export function LiveClock({ isTimerActive, timeRemaining }: LiveClockProps) {
     seconds = time.getSeconds();
   }
 
-  // Calculate angles (0 degrees = 12 o'clock position)
-  // For countdown:
-  // Minute hand: 0-60 minutes map to 0-360 degrees
-  // Hour hand: 0-12 hours map to 0-360 degrees (usually not used much for short timers but good to have)
+  // Calculate angles for clock hands
+  // CSS rotation: 0deg = RIGHT, 90deg = DOWN, 180deg = LEFT, 270deg = UP
+  // Clock face: 12 o'clock = UP, 3 o'clock = RIGHT, 6 o'clock = DOWN, 9 o'clock = LEFT
+  // We need to subtract 90 degrees to align CSS rotation with clock positions
+  // Hour hand: 30 degrees per hour + 0.5 degrees per minute
+  // Minute hand: 6 degrees per minute + 0.1 degrees per second
   
-  const hourAngle = (hours * 30) + (minutes * 0.5);
-  const minuteAngle = (minutes * 6) + (seconds * 0.1);
+  const hourAngle = (hours * 30) + (minutes * 0.5) - 90;
+  const minuteAngle = (minutes * 6) + (seconds * 0.1) - 90;
 
   // Center is at the center of the Ticker component (responsive)
   // For mobile: 30px / 2 = 15px, for desktop: 42.793 / 2 = 21.3965px

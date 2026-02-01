@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { hapticSounds } from '@/app/hooks/useHapticSound';
 
 interface TimerSelectorProps {
   onSelect: (minutes: number) => void;
@@ -58,6 +59,7 @@ export function TimerSelector({ onSelect, onCancel }: TimerSelectorProps) {
               key={duration}
               onClick={(e) => {
                 e.stopPropagation();
+                hapticSounds.thud();
                 onSelect(duration);
               }}
               className={`${buttonSize} font-extralight text-white/80 hover:text-white hover:scale-110 transition-all duration-200 w-20 h-20 sm:w-24 sm:h-24 lg:w-32 lg:h-32 flex items-center justify-center rounded-full border border-white/20 hover:border-white/40 hover:bg-white/5`}

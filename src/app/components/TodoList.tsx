@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { X, Plus } from 'lucide-react';
+import { hapticSounds } from '@/app/hooks/useHapticSound';
 
 interface Todo {
   id: string;
@@ -47,6 +48,7 @@ export function TodoList({ themeMode }: { themeMode?: 'light' | 'dark' | 'color'
 
   const handleAddTodo = () => {
     if (newTodoText.trim()) {
+      hapticSounds.pop();
       setTodos([...todos, { id: Date.now().toString(), text: newTodoText.trim(), completed: false }]);
       setNewTodoText('');
       setIsAdding(false);
@@ -86,10 +88,12 @@ export function TodoList({ themeMode }: { themeMode?: 'light' | 'dark' | 'color'
   };
 
   const toggleComplete = (id: string) => {
+    hapticSounds.click();
     setTodos(todos.map(t => t.id === id ? { ...t, completed: !t.completed } : t));
   };
 
   const deleteTodo = (id: string) => {
+    hapticSounds.tick();
     setTodos(todos.filter(t => t.id !== id));
   };
 

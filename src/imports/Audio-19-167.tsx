@@ -1,6 +1,6 @@
 import svgPaths from "./svg-p508asmg22";
-import imgEllipse57 from "figma:asset/b9be0b0d8a1343ad5fba72acb72557cca3957f6a.png";
-import imgEllipse58 from "figma:asset/b412d764fc285d03b9f6686f28ddc2cd172d776d.png";
+import imgEllipse57 from "@/assets/b9be0b0d8a1343ad5fba72acb72557cca3957f6a.png";
+import imgEllipse58 from "@/assets/b412d764fc285d03b9f6686f28ddc2cd172d776d.png";
 
 function Play() {
   return (
