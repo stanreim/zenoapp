@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Placeholder Assets</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            margin-top: 0;
+            color: #333;
+        }
+        button {
+            background: #4A90E2;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #357ABD;
+        }
+        .info {
+            background: #E8F4FF;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+            color: #1976D2;
+        }
+        .warning {
+            background: #FFF3E0;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+            color: #F57C00;
+        }
+        #status {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 6px;
+            display: none;
+        }
+        #status.success {
+            background: #E8F5E9;
+            color: #388E3C;
+            display: block;
+        }
+        #status.error {
+            background: #FFEBEE;
+            color: #D32F2F;
+            display: block;
+        }
+        canvas {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Placeholder Asset Generator</h1>
+        
+        <div class="info">
+            <strong>Info:</strong> This tool generates simple placeholder videos for testing the focus experience. 
+            Each mood will have a different colored gradient that slowly animates.
+        </div>
+
+        <div class="warning">
+            <strong>Note:</strong> This generator creates basic placeholder videos using canvas. 
+            For production, replace these with high-quality ambient video loops and audio files.
+        </div>
+
+        <h2>Generate Placeholder Videos</h2>
+        <p>Click each button to generate and download a placeholder video:</p>
+        
+        <button onclick="generateVideo(0, '#667EEA', '#764BA2')">Generate Mood 0 (Purple Blue)</button>
+        <button onclick="generateVideo(1, '#F093FB', '#F5576C')">Generate Mood 1 (Pink Red)</button>
+        <button onclick="generateVideo(2, '#4FACFE', '#00F2FE')">Generate Mood 2 (Blue Cyan)</button>
+        <button onclick="generateVideo(3, '#43E97B', '#38F9D7')">Generate Mood 3 (Green Teal)</button>
+
+        <h2>Audio Files</h2>
+        <p>For placeholder audio, you can either:</p>
+        <ul>
+            <li>Use the generated silent audio files (download below)</li>
+            <li>Download free ambient sounds from <a href="https://freesound.org" target="_blank">Freesound.org</a></li>
+        </ul>
+
+        <button onclick="generateSilentAudio(0)">Generate Silent Audio - Mood 0</button>
+        <button onclick="generateSilentAudio(1)">Generate Silent Audio - Mood 1</button>
+        <button onclick="generateSilentAudio(2)">Generate Silent Audio - Mood 2</button>
+        <button onclick="generateSilentAudio(3)">Generate Silent Audio - Mood 3</button>
+
+        <div id="status"></div>
+
+        <h2>📁 File Placement</h2>
+        <p>After generating, place the files in your project:</p>
+        <pre style="background: #f5f5f5; padding: 15px; border-radius: 6px; overflow-x: auto;">
+/public/assets/
+  ├── mood-0.mp4
+  ├── mood-0.mp3
+  ├── mood-1.mp4
+  ├── mood-1.mp3
+  ├── mood-2.mp4
+  ├── mood-2.mp3
+  ├── mood-3.mp4
+  └── mood-3.mp3
+        </pre>
+    </div>
+
+    <canvas id="canvas"></canvas>
+
+    <script>
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = type;
+            setTimeout(() => {
+                status.style.display = 'none';
+            }, 5000);
+        }
+
+        async function generateVideo(moodIndex, color1, color2) {
+            showStatus(`Generating mood-${moodIndex}.mp4... This may take a moment.`, 'success');
+
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 1920;
+            canvas.height = 1080;
+
+            const frames = [];
+            const fps = 30;
+            const duration = 10; // seconds
+            const totalFrames = fps * duration;
+
+            // Generate frames
+            for (let i = 0; i < totalFrames; i++) {
+                const progress = i / totalFrames;
+                
+                // Create animated gradient
+                const gradient = ctx.createLinearGradient(
+                    0, 
+                    0, 
+                    canvas.width * Math.cos(progress * Math.PI * 2), 
+                    canvas.height * Math.sin(progress * Math.PI * 2)
+                );
+                gradient.addColorStop(0, color1);
+                gradient.addColorStop(1, color2);
+
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Add subtle noise/texture
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const data = imageData.data;
+                for (let j = 0; j < data.length; j += 40) {
+                    const noise = Math.random() * 10 - 5;
+                    data[j] += noise;
+                    data[j + 1] += noise;
+                    data[j + 2] += noise;
+                }
+                ctx.putImageData(imageData, 0, 0);
+
+                await new Promise(resolve => {
+                    canvas.toBlob(blob => {
+                        frames.push(blob);
+                        resolve();
+                    }, 'image/jpeg', 0.95);
+                });
+            }
+
+            // Note: Actual video encoding would require a library like MediaRecorder
+            // or server-side processing. This is a simplified demonstration.
+            showStatus(
+                `Note: Browser-based video encoding is complex. Please use the SETUP-ASSETS.md guide for FFmpeg commands, ` +
+                `or download pre-made ambient videos from Pexels.com or Pixabay.com. Search for "abstract gradient loop" or "ambient background loop".`,
+                'error'
+            );
+        }
+
+        function generateSilentAudio(moodIndex) {
+            // Generate 10 seconds of silence
+            const sampleRate = 44100;
+            const duration = 10;
+            const numChannels = 2;
+            const numSamples = sampleRate * duration;
+
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const audioBuffer = audioContext.createBuffer(numChannels, numSamples, sampleRate);
+
+            // Leave buffer empty for silence
+
+            // Convert to WAV (simplified)
+            showStatus(
+                `For silent audio files, use this FFmpeg command in your terminal:\n\n` +
+                `ffmpeg -f lavfi -i anullsrc=r=44100:cl=stereo -t 10 -q:a 9 -acodec libmp3lame public/assets/mood-${moodIndex}.mp3`,
+                'success'
+            );
+        }
+    </script>
+</body>
+</html>
