@@ -1,6 +1,6 @@
-# 🧘 Ultra-Minimal Focus Experience
+# Zeno
 
-A single-page, gesture-driven focus web application with no visible UI. The entire viewport is the interface.
+A single-page, gesture-driven focus web application. Minimal UI, maximum focus. The entire viewport is the interface.
 
 ## ✨ Features
 

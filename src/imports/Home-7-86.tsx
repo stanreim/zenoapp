@@ -1,5 +1,5 @@
 // Home component with 3-mode theme system (light/dark/color)
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import svgPaths from "./svg-e0ybop1bd5";
 import { LiveClock } from "@/app/components/LiveClock";
 import { DynamicGreeting } from "@/app/components/DynamicGreeting";
@@ -9,8 +9,8 @@ import { AudioPlayerRef } from "@/app/components/AudioPlayer";
 
 function Greeting({ themeMode }: { themeMode?: 'light' | 'dark' | 'color' }) {
   return (
-    <div className="content-stretch flex items-start p-[24px] relative shrink-0 w-[321px]" data-name="Greeting">
-      <div className="relative shrink-0 w-[273px]">
+    <div className="content-stretch flex items-start p-4 sm:p-5 lg:p-6 relative shrink-0 min-w-0 flex-1 max-w-[321px]" data-name="Greeting">
+      <div className="relative shrink-0 w-full max-w-[273px]">
         <DynamicGreeting themeMode={themeMode} />
       </div>
     </div>
@@ -81,7 +81,7 @@ function FocusToggle({ isOn, themeMode, timeRemaining }: { isOn?: boolean; theme
 function TimerSwitch({ isTimerActive, themeMode, timeRemaining }: { isTimerActive?: boolean; themeMode?: 'light' | 'dark' | 'color'; timeRemaining?: number | null }) {
   // data-name="Timer" allows HomeWrapper to capture clicks and trigger the timer
   return (
-    <div className="content-stretch flex h-[208px] items-start justify-center p-[24px] relative shrink-0 w-[342px] cursor-pointer" data-name="Timer">
+    <div className="content-stretch flex min-h-[120px] sm:min-h-[168px] lg:min-h-[208px] items-start justify-center p-4 sm:p-5 lg:p-6 relative shrink-0 min-w-0 flex-1 max-w-[342px] cursor-pointer" data-name="Timer">
       <FocusToggle isOn={isTimerActive} themeMode={themeMode} timeRemaining={timeRemaining} />
     </div>
   );
@@ -129,7 +129,7 @@ function ChangeTheme({ themeMode, onToggle }: { themeMode?: 'light' | 'dark' | '
 
 function ThemeToggle({ themeMode, onToggle }: { themeMode?: 'light' | 'dark' | 'color'; onToggle?: () => void }) {
   return (
-    <div className="content-stretch flex items-start justify-end p-[24px] relative shrink-0 w-[321px]" data-name="Toggle">
+    <div className="content-stretch flex items-start justify-end p-4 sm:p-5 lg:p-6 relative shrink-0 min-w-0 flex-1 max-w-[321px]" data-name="Toggle">
       <ChangeTheme themeMode={themeMode} onToggle={onToggle} />
     </div>
   );
@@ -137,7 +137,7 @@ function ThemeToggle({ themeMode, onToggle }: { themeMode?: 'light' | 'dark' | '
 
 function Top({ isTimerActive, themeMode, timeRemaining, onToggleDarkMode }: { isTimerActive?: boolean; themeMode?: 'light' | 'dark' | 'color'; timeRemaining?: number | null; onToggleDarkMode?: () => void }) {
   return (
-    <div className="absolute content-stretch flex items-start justify-between left-0 top-0 w-full" data-name="Top">
+    <div className="absolute content-stretch flex items-start justify-between left-0 top-0 w-full gap-2 sm:gap-4 min-h-0 overflow-hidden pt-[env(safe-area-inset-top)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]" data-name="Top">
       {/* Greeting - Left - fades away when focus mode is on */}
       <div 
         style={{ 
@@ -204,33 +204,39 @@ function Ticker1({
   );
 }
 
+function useTimeButtonRadius() {
+  const [radius, setRadius] = useState(140);
+  useEffect(() => {
+    const update = () => {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      const size = Math.min(w, h);
+      setRadius(size < 400 ? 100 : size < 640 ? 130 : size < 1024 ? 160 : 180);
+    };
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
+  return radius;
+}
+
 function TimeButton({ minutes, onClick, themeMode, position }: { minutes: number; onClick: () => void; themeMode?: 'light' | 'dark' | 'color'; position: '15' | '30' | '45' }) {
-  // Position buttons around the clock at 15, 30, and 45 minute marks
-  // On a clock face: 15min = 3 o'clock (right), 30min = 6 o'clock (bottom), 45min = 9 o'clock (left)
-  // CSS: 0deg = right, 90deg = down, 180deg = left, 270deg = up
-  // Clock: 0deg = up (12 o'clock), 90deg = right (3 o'clock), 180deg = down (6 o'clock), 270deg = left (9 o'clock)
   const angleMap = {
-    '15': 90,   // 3 o'clock (right)
-    '30': 180,  // 6 o'clock (bottom)
-    '45': 270   // 9 o'clock (left)
+    '15': 90,
+    '30': 180,
+    '45': 270
   };
-  
   const angle = angleMap[position];
-  const radius = 180; // Distance from center (adjust based on clock size)
-  
-  // Convert angle to x, y position relative to center
-  // CSS uses: 0deg = right, 90deg = down
-  // Clock uses: 0deg = up (12 o'clock), 90deg = right (3 o'clock)
-  // So we need: CSS angle = clock angle - 90
+  const radiusPx = useTimeButtonRadius();
   const cssAngle = angle - 90;
   const rad = cssAngle * (Math.PI / 180);
-  const x = Math.cos(rad) * radius;
-  const y = Math.sin(rad) * radius;
+  const x = Math.cos(rad) * radiusPx;
+  const y = Math.sin(rad) * radiusPx;
   
   return (
     <button
       onClick={onClick}
-      className={`absolute -translate-x-1/2 -translate-y-1/2 rounded-[112px] shrink-0 size-[48px] transition-all duration-300 hover:scale-110 flex items-center justify-center ${
+      className={`absolute -translate-x-1/2 -translate-y-1/2 rounded-[112px] shrink-0 size-10 sm:size-11 lg:size-12 transition-all duration-300 hover:scale-110 flex items-center justify-center ${
         themeMode === 'light' 
           ? 'bg-white shadow-[0px_4px_8px_-3px_rgba(0,0,0,0.54)]' 
           : 'bg-[#4f4f4f] shadow-[0px_4px_8px_-3px_rgba(0,0,0,0.54)]'
@@ -269,7 +275,7 @@ function Ticker({
   themeMode?: 'light' | 'dark' | 'color' 
 }) {
   return (
-    <div className="absolute h-[250px] sm:h-[350px] lg:h-[411px] left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-[300px] sm:w-[400px] lg:w-[434px]" data-name="Ticker">
+    <div className="absolute h-[220px] min-[400px]:h-[250px] sm:h-[300px] md:h-[350px] lg:h-[411px] left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-[260px] min-[400px]:w-[300px] sm:w-[340px] md:w-[400px] lg:w-[434px]" data-name="Ticker">
       <Ticker1 
         isTimerActive={isTimerActive} 
         timeRemaining={timeRemaining} 
@@ -291,7 +297,7 @@ function Ticker({
 
 function Time({ themeMode }: { themeMode?: 'light' | 'dark' | 'color' }) {
   return (
-    <div className="relative shrink-0 w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] lg:size-[509px]" data-name="Time">
+    <div className="relative shrink-0 w-[260px] h-[260px] min-[400px]:w-[300px] min-[400px]:h-[300px] sm:w-[340px] sm:h-[340px] md:w-[400px] md:h-[400px] lg:size-[509px]" data-name="Time">
       <div className="absolute inset-[-0.79%]">
         <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 517 517">
           <g id="Time">
@@ -388,7 +394,7 @@ function Table({ themeMode }: { themeMode?: 'light' | 'dark' | 'color' }) {
 function Tasks({ className, themeMode }: { className?: string; themeMode?: 'light' | 'dark' | 'color' }) {
   return (
     <div 
-      className={className || "bg-[#e9e9e9] border border-[#e0e0e0] border-solid content-stretch flex items-end p-[16px] relative rounded-[24px] w-[265px] transition-all duration-500"} 
+      className={className || "bg-[#e9e9e9] border border-[#e0e0e0] border-solid content-stretch flex items-end p-3 sm:p-4 relative rounded-2xl w-full max-w-[265px] min-w-0 transition-all duration-500"} 
       data-name="Tasks" 
       style={{ 
         backgroundImage: themeMode === 'light'
@@ -417,7 +423,7 @@ function Tasks({ className, themeMode }: { className?: string; themeMode?: 'ligh
 
 function TasksContainer({ themeMode }: { themeMode?: 'light' | 'dark' | 'color' }) {
   return (
-    <div className="content-stretch flex flex-col items-start p-[10px] relative shrink-0 w-[285px]" data-name="TasksContainer">
+    <div className="content-stretch flex flex-col items-start p-2 sm:p-2.5 relative shrink-0 w-full max-w-[285px] min-w-0 px-3 sm:px-4 lg:pl-4" data-name="TasksContainer">
       <Tasks themeMode={themeMode} />
     </div>
   );
@@ -447,7 +453,7 @@ function PlayerContainer({
   audioPlayerRef?: React.RefObject<AudioPlayerRef>;
 }) {
   return (
-    <div className="content-stretch flex gap-[10px] h-[121px] items-center justify-center p-[24px] relative shrink-0" data-name="Player">
+    <div className="content-stretch flex gap-2 sm:gap-2.5 min-h-[100px] sm:min-h-[121px] items-center justify-center p-4 sm:p-5 lg:p-6 relative shrink-0 w-full max-w-[500px] min-w-0" data-name="Player">
       <AudioPlayerUI
         songName={songName}
         currentTime={currentTime}
@@ -495,7 +501,11 @@ function BottomBar({
   audioPlayerRef?: React.RefObject<AudioPlayerRef>;
 }) {
   return (
-    <div className="absolute bottom-0 content-stretch flex items-end justify-start left-0 w-full" data-name="Bottom Bar">
+    <div 
+      className="absolute bottom-0 content-stretch flex flex-col sm:flex-row items-center sm:items-end justify-center sm:justify-start left-0 w-full gap-2 pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]" 
+      style={{ paddingBottom: 'max(1rem, env(safe-area-inset-bottom))' }}
+      data-name="Bottom Bar"
+    >
       {/* Tasks - Left - fades away when focus mode is on */}
       <div 
         style={{ 
@@ -507,8 +517,8 @@ function BottomBar({
         <TasksContainer themeMode={themeMode} />
       </div>
       
-      {/* Audio Player - Center - Absolutely positioned to always stay centered */}
-      <div className="absolute left-1/2 -translate-x-1/2 bottom-0">
+      {/* Audio Player - Center - On mobile full width, on sm+ absolutely centered */}
+      <div className="relative sm:absolute left-0 sm:left-1/2 sm:-translate-x-1/2 bottom-0 w-full flex justify-center">
         <PlayerContainer
         songName={songName || 'Song Name'}
         currentTime={currentTime || 0}

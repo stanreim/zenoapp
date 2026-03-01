@@ -26,9 +26,8 @@ type MoodTheme =
 const BUILD_ID = '2.0';
 
 export default function App() {
-  // Set document title so you can confirm new deployment (tab shows "Focus App — v2.0")
   useEffect(() => {
-    document.title = `Focus App — v${BUILD_ID}`;
+    document.title = `Zeno — v${BUILD_ID}`;
   }, []);
 
   // Loading State
@@ -50,7 +49,7 @@ export default function App() {
   const [customSongs, setCustomSongs] = useState<Song[]>(() => {
     // Load custom songs from localStorage on initial render
     try {
-      const saved = localStorage.getItem('focusApp_customSongs');
+      const saved = localStorage.getItem('zenoApp_customSongs');
       return saved ? JSON.parse(saved) : [];
     } catch {
       return [];
@@ -59,7 +58,7 @@ export default function App() {
   const [selectedSongId, setSelectedSongId] = useState<string>(() => {
     // Load selected song from localStorage on initial render
     try {
-      const saved = localStorage.getItem('focusApp_selectedSongId');
+      const saved = localStorage.getItem('zenoApp_selectedSongId');
       return saved || 'song-1';
     } catch {
       return 'song-1';
@@ -174,7 +173,7 @@ export default function App() {
   // Save custom songs to localStorage whenever they change
   useEffect(() => {
     try {
-      localStorage.setItem('focusApp_customSongs', JSON.stringify(customSongs));
+      localStorage.setItem('zenoApp_customSongs', JSON.stringify(customSongs));
     } catch (e) {
       console.warn('Failed to save custom songs to localStorage:', e);
     }
@@ -183,7 +182,7 @@ export default function App() {
   // Save selected song to localStorage whenever it changes
   useEffect(() => {
     try {
-      localStorage.setItem('focusApp_selectedSongId', selectedSongId);
+      localStorage.setItem('zenoApp_selectedSongId', selectedSongId);
     } catch (e) {
       console.warn('Failed to save selected song to localStorage:', e);
     }
@@ -548,10 +547,13 @@ export default function App() {
         {/* Volume Feedback Indicator */}
         {showVolumeFeedback && isTimerActive && !sessionEnded && (
           <div 
-             className="absolute bottom-24 left-1/2 -translate-x-1/2 pointer-events-none transition-opacity duration-300 z-50"
-             style={{ opacity: showVolumeFeedback ? 1 : 0 }}
+             className="absolute bottom-20 sm:bottom-24 left-1/2 -translate-x-1/2 pointer-events-none transition-opacity duration-300 z-50 px-2"
+             style={{ 
+               opacity: showVolumeFeedback ? 1 : 0,
+               paddingBottom: 'env(safe-area-inset-bottom)'
+             }}
           >
-             <div className={`backdrop-blur-md px-6 py-2 rounded-full shadow-sm text-sm font-medium tracking-wide transition-colors duration-500 ${themeMode === 'light' ? 'bg-white/80 text-gray-600' : 'bg-white/20 text-white'}`}>
+             <div className={`backdrop-blur-md px-4 sm:px-6 py-1.5 sm:py-2 rounded-full shadow-sm text-xs sm:text-sm font-medium tracking-wide transition-colors duration-500 ${themeMode === 'light' ? 'bg-white/80 text-gray-600' : 'bg-white/20 text-white'}`}>
                VOLUME {Math.round(volume * 100)}%
              </div>
           </div>
@@ -561,7 +563,8 @@ export default function App() {
 
         {/* Build tag – confirms you're on the latest deployment (remove once verified) */}
         <div
-          className="fixed bottom-3 left-3 text-xs font-medium opacity-70 select-none pointer-events-none font-mono bg-black/10 dark:bg-white/10 px-2 py-1 rounded"
+          className="fixed bottom-3 left-3 text-[10px] sm:text-xs font-medium opacity-70 select-none pointer-events-none font-mono bg-black/10 dark:bg-white/10 px-2 py-1 rounded"
+          style={{ marginLeft: 'env(safe-area-inset-left)', marginBottom: 'max(0.75rem, env(safe-area-inset-bottom))' }}
           aria-hidden
         >
           v{BUILD_ID}

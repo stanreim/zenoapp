@@ -306,21 +306,21 @@ export function SoundPickerModal({
 
   return (
     <div 
-      className="fixed inset-0 z-50 bg-[#ededed] size-full overflow-hidden"
+      className="fixed inset-0 z-50 bg-[#ededed] size-full overflow-hidden pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)] pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]"
       style={{ animation: 'fadeIn 0.4s ease-in-out' }}
     >
       {/* Top Bar */}
-      <div className="absolute content-stretch flex items-start justify-between left-0 top-0 w-full p-[24px]">
-        <div className="relative shrink-0 w-[321px]">
-          <p className="font-['SF_Pro:Medium',sans-serif] font-[510] leading-none relative shrink-0 text-[#c3c3c3] text-[40px] md:text-[64px] whitespace-pre-wrap" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <div className="absolute content-stretch flex flex-col sm:flex-row items-start justify-between left-0 top-0 w-full p-4 sm:p-5 md:p-6 gap-4">
+        <div className="relative shrink-0 min-w-0 flex-1">
+          <p className="font-['SF_Pro:Medium',sans-serif] font-[510] leading-none relative shrink-0 text-[#c3c3c3] text-2xl sm:text-[40px] md:text-[64px] whitespace-pre-wrap" style={{ fontVariationSettings: "'wdth' 100" }}>
             Select Sound
           </p>
         </div>
         
-        <div className="relative shrink-0 flex justify-end w-[321px]">
+        <div className="relative shrink-0 flex justify-end">
           <button 
             onClick={onClose}
-            className="bg-[#282828] relative rounded-[88px] shrink-0 size-[48px] cursor-pointer hover:bg-[#333] transition-colors"
+            className="bg-[#282828] relative rounded-full shrink-0 size-10 sm:size-12 cursor-pointer hover:bg-[#333] transition-colors min-h-[44px] min-w-[44px]"
           >
             <div className="content-stretch flex items-center justify-center overflow-clip px-[8px] py-[9px] relative rounded-[inherit] size-full">
               <div className="overflow-clip relative shrink-0 size-[24px]">
@@ -339,7 +339,7 @@ export function SoundPickerModal({
       </div>
 
       {/* Main Table Content */}
-      <div className="-translate-x-1/2 -translate-y-1/2 absolute content-stretch flex flex-col gap-[24px] items-end left-1/2 top-1/2 w-full max-w-[615px] px-4 md:px-0 max-h-[70vh] overflow-y-auto scrollbar-hide">
+      <div className="-translate-x-1/2 -translate-y-1/2 absolute content-stretch flex flex-col gap-4 sm:gap-6 items-end left-1/2 top-1/2 w-full max-w-[615px] px-4 sm:px-6 md:px-8 max-h-[65vh] sm:max-h-[70vh] overflow-y-auto scrollbar-hide">
         {songs.map((song, index) => (
           <div key={song.id} className="w-full">
             <SongItem 
@@ -349,13 +349,13 @@ export function SoundPickerModal({
               isSelected={selectedSongId === song.id}
             />
             {/* Separator */}
-            <div className="bg-[#e0e0e0] h-px shrink-0 w-full mt-[24px]" />
+            <div className="bg-[#e0e0e0] h-px shrink-0 w-full mt-4 sm:mt-6" />
           </div>
         ))}
 
         {/* Add Custom Section */}
         <div className="w-full">
-          <div className="content-stretch flex gap-[24px] items-center relative shrink-0 w-full">
+          <div className="content-stretch flex flex-col sm:flex-row gap-3 sm:gap-6 items-stretch sm:items-center relative shrink-0 w-full">
             <div className="content-stretch flex flex-[1_0_0] flex-col gap-[8px] items-start leading-[normal] min-h-px min-w-px relative">
               <p className="font-['SF_Pro:Medium',sans-serif] font-[510] relative shrink-0 text-[#111] text-[14px] w-full whitespace-pre-wrap" style={{ fontVariationSettings: "'wdth' 100" }}>
                 Add your own
@@ -385,7 +385,7 @@ export function SoundPickerModal({
             <button
                onClick={handleAddCustomSong}
                disabled={!showPlayIcon}
-               className={`relative rounded-[48px] shrink-0 size-[56px] group cursor-pointer transition-all ${!showPlayIcon ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'}`}
+               className={`relative rounded-full shrink-0 size-12 sm:size-14 group cursor-pointer transition-all min-h-[48px] min-w-[48px] ${!showPlayIcon ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'}`}
             >
               <div className="content-stretch flex items-center justify-center overflow-clip p-[2px] relative rounded-[inherit] size-full">
                 <div className="relative shrink-0 size-[17.657px]">
@@ -457,10 +457,10 @@ function SongItem({ song, onSelect, onDelete, isSelected }: { song: Song; onSele
   };
 
   return (
-    <div className="content-stretch flex gap-[24px] items-center relative shrink-0 w-full group cursor-pointer" onClick={onSelect}>
+    <div className="content-stretch flex gap-3 sm:gap-6 items-center relative shrink-0 w-full min-w-0 group cursor-pointer" onClick={onSelect}>
       {/* Image */}
-      <div className="overflow-clip pointer-events-none relative rounded-[4px] shrink-0 size-[56px]">
-        <div className="-translate-x-1/2 -translate-y-1/2 absolute left-1/2 rounded-[8px] size-[56px] top-1/2">
+      <div className="overflow-clip pointer-events-none relative rounded shrink-0 size-12 sm:size-14 flex-shrink-0">
+        <div className="-translate-x-1/2 -translate-y-1/2 absolute left-1/2 rounded-lg size-full top-1/2">
           <div aria-hidden="true" className="absolute inset-0 rounded-[8px]">
             <div className="absolute bg-[#d9d9d9] inset-0 rounded-[8px]" />
             {song.imageUrl && !imageError ? (
@@ -485,11 +485,11 @@ function SongItem({ song, onSelect, onDelete, isSelected }: { song: Song; onSele
       </div>
 
       {/* Title */}
-      <div className="content-stretch flex flex-col gap-[8px] items-start leading-[normal] relative shrink-0 flex-1 whitespace-pre-wrap min-w-0">
-        <p className="font-['SF_Pro:Regular',sans-serif] font-normal relative shrink-0 text-[#111] text-[20px] w-full truncate" style={{ fontVariationSettings: "'wdth' 100" }}>
+      <div className="content-stretch flex flex-col gap-1 sm:gap-2 items-start leading-[normal] relative shrink-0 flex-1 min-w-0">
+        <p className="font-['SF_Pro:Regular',sans-serif] font-normal relative shrink-0 text-[#111] text-base sm:text-lg md:text-xl w-full truncate" style={{ fontVariationSettings: "'wdth' 100" }}>
           {song.name}
         </p>
-        <p className="font-['SF_Pro:Medium',sans-serif] font-[510] relative shrink-0 text-[#bdbdbd] text-[14px] w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
+        <p className="font-['SF_Pro:Medium',sans-serif] font-[510] relative shrink-0 text-[#bdbdbd] text-xs sm:text-sm w-full" style={{ fontVariationSettings: "'wdth' 100" }}>
           {song.duration}
         </p>
       </div>
@@ -498,7 +498,7 @@ function SongItem({ song, onSelect, onDelete, isSelected }: { song: Song; onSele
       {onDelete && (
         <button
           onClick={handleDelete}
-          className="relative shrink-0 size-[40px] opacity-0 group-hover:opacity-100 transition-opacity hover:scale-110"
+          className="relative shrink-0 size-9 sm:size-10 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity hover:scale-110 touch-manipulation min-h-[44px] min-w-[44px] flex items-center justify-center"
           title="Remove"
         >
           <svg className="block size-full" fill="none" viewBox="0 0 24 24">
@@ -513,7 +513,7 @@ function SongItem({ song, onSelect, onDelete, isSelected }: { song: Song; onSele
       )}
 
       {/* Play Button */}
-      <div className="relative shrink-0 size-[56px] group-hover:scale-105 transition-transform">
+      <div className="relative shrink-0 size-12 sm:size-14 group-hover:scale-105 transition-transform flex-shrink-0">
         <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 56 56">
           <g id="Play">
             <rect 

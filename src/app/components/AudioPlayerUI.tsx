@@ -106,7 +106,7 @@ function VinylArtwork({
 
   return (
     <div 
-      className="relative shrink-0 size-[72px] shadow-[0px_4px_8px_0px_rgba(0,0,0,0.54),3px_28px_27px_0px_rgba(0,0,0,0.22)] rounded-full overflow-hidden cursor-pointer transition-transform hover:scale-105 active:scale-95"
+      className="relative shrink-0 size-14 sm:size-16 lg:size-[72px] shadow-[0px_4px_8px_0px_rgba(0,0,0,0.54),3px_28px_27px_0px_rgba(0,0,0,0.22)] rounded-full overflow-hidden cursor-pointer transition-transform hover:scale-105 active:scale-95 flex-shrink-0"
       data-name="Track"
       onClick={handleClick}
       onPointerDown={handlePointerDown}
@@ -316,7 +316,7 @@ export function AudioPlayerUI({
 
   return (
     <div 
-      className="content-stretch flex gap-[10px] items-end relative shrink-0"
+      className="content-stretch flex gap-2 sm:gap-2.5 items-end relative shrink-0 w-full min-w-0 max-w-full"
       data-name="Player"
     >
       {/* Vinyl Album Art - Clickable for play/pause, long press for sound selection */}
@@ -330,7 +330,7 @@ export function AudioPlayerUI({
       
       {/* Song Info and Waveform */}
       <div 
-        className="content-stretch flex flex-col gap-[10px] items-start justify-end relative shrink-0 w-[265px]"
+        className="content-stretch flex flex-col gap-2 sm:gap-2.5 items-start justify-end relative shrink-0 flex-1 min-w-0 w-full max-w-[265px] sm:max-w-[280px]"
         data-name="Song"
       >
         {/* Song Name and Duration */}
@@ -339,7 +339,7 @@ export function AudioPlayerUI({
           data-name="Song"
         >
           <p 
-            className={`font-['SF_Pro:Medium',sans-serif] font-[510] relative shrink-0 text-[14px] transition-colors duration-500 ${
+            className={`font-['SF_Pro:Medium',sans-serif] font-[510] relative shrink-0 text-xs sm:text-sm transition-colors duration-500 truncate max-w-full ${
               themeMode === 'light' ? 'text-[#111]' : 'text-white'
             }`}
             style={{ fontVariationSettings: "'wdth' 100" }}
@@ -347,7 +347,7 @@ export function AudioPlayerUI({
             {songName}
           </p>
           <p 
-            className={`font-['SF_Pro:Regular',sans-serif] font-normal relative shrink-0 text-[12px] transition-colors duration-500 ${
+            className={`font-['SF_Pro:Regular',sans-serif] font-normal relative shrink-0 text-[10px] sm:text-xs transition-colors duration-500 ${
               themeMode === 'light' ? 'text-[#bdbdbd]' : 'text-[#666]'
             }`}
             style={{ fontVariationSettings: "'wdth' 100" }}
@@ -361,7 +361,7 @@ export function AudioPlayerUI({
           ref={waveformRef}
           onClick={handleWaveformClick}
           onPointerMove={handleWaveformDrag}
-          className={`content-stretch flex gap-[4px] h-[48px] items-center overflow-clip px-[12px] py-[4px] relative rounded-[112px] shrink-0 w-full cursor-pointer transition-colors duration-500 ${
+          className={`content-stretch flex gap-1 sm:gap-[4px] h-10 sm:h-12 items-center overflow-clip px-2 sm:px-3 py-1 sm:py-[4px] relative rounded-full shrink-0 w-full min-w-0 cursor-pointer transition-colors duration-500 ${
             themeMode === 'light' ? 'bg-[#e4e4e4]' : 'bg-[#2a2a2a]'
           }`}
           data-name="Audiowave"

@@ -8,7 +8,7 @@ interface Todo {
   completed: boolean;
 }
 
-const STORAGE_KEY = 'focus-app-todos';
+const STORAGE_KEY = 'zeno-app-todos';
 
 function PlusIcon({ themeMode }: { themeMode?: 'light' | 'dark' | 'color' }) {
   return (
