@@ -22,6 +22,9 @@ type MoodTheme =
   | { type: 'waves'; bg: string; stroke: string }
   | { type: 'image'; src: string; bg: string };
 
+// Build ID – visible on the page so you can confirm the deployed version
+const BUILD_ID = '2.0';
+
 export default function App() {
   // Loading State
   const [isLoading, setIsLoading] = useState(true);
@@ -426,6 +429,7 @@ export default function App() {
         'bg-[#ededed]'
       }`} 
       onClick={handleScreenClick}
+      data-build={BUILD_ID}
       onMouseDown={handlePointerDown}
       onMouseUp={handlePointerUp}
       onMouseLeave={handlePointerUp}
@@ -549,6 +553,14 @@ export default function App() {
         )}
 
         {/* Mood Switcher - removed for simplicity */}
+
+        {/* Build tag – confirms you're on the latest deployment (remove once verified) */}
+        <div
+          className="fixed bottom-2 left-2 text-[10px] opacity-40 select-none pointer-events-none font-mono"
+          aria-hidden
+        >
+          build {BUILD_ID}
+        </div>
       </div>
 
 
