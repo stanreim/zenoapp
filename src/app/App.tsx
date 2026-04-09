@@ -296,6 +296,9 @@ export default function App() {
         setSessionEnded(true);
         setIsPlaying(false);
         setIsTimerActive(false); // Exit focus mode so UI fades back in
+        // Clear expired session metadata so manual playback can be resumed normally.
+        setSessionLength(null);
+        setStartTime(null);
         // Play triumphant success sound when session completes
         hapticSounds.success();
         clearInterval(interval);

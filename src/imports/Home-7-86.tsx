@@ -403,9 +403,9 @@ function Top({
         />
       </div>
 
-      {/* Theme control: stays visible and above watchface backdrop (z-40) while picker open; hidden for sound sidebar / focus mode. */}
+      {/* Theme control: pin to top-right so it never gets clipped by center/left column width. */}
       <div
-        className={`content-stretch flex items-center justify-end relative shrink-0 min-w-0 flex-1 max-w-[321px] ${fadeClass} ${themeAbovePickerBackdrop}`}
+        className={`absolute right-0 top-0 pt-[env(safe-area-inset-top)] ${fadeClass} ${themeAbovePickerBackdrop}`}
         style={themeColumnStyle}
         aria-hidden={isFocusMode}
       >

@@ -4,12 +4,12 @@ import { useEffect, useRef, useState } from 'react';
 const WATCHFACE_IDS = [0, 1, 2, 3, 4, 5] as const;
 const WATCHFACE_IMAGES = WATCHFACE_IDS.map((i) => `/assets/Watchfaces/Watchface-${i}.png`);
 
-// Sidepanel: cards +20% vs prior 117×88; vertical list, itemSpacing 24, flush right with 24px screen inset
+// Sidepanel: cards reduced by 20% from current size; vertical list with 16px spacing
 const PANEL_WIDTH = 282;
-const CARD_WIDTH = Math.round(117 * 1.2);
-const CARD_HEIGHT = Math.round(88 * 1.2);
+const CARD_WIDTH = Math.round(117 * 1.2 * 0.8);
+const CARD_HEIGHT = Math.round(88 * 1.2 * 0.8);
 const PADDING_H = 24;
-const ITEM_SPACING = 24;
+const ITEM_SPACING = 16;
 const CARD_STAGGER_MS = 100;
 // 1.3s entrance: opacity 0 → 1 (transparent to fully visible) for smooth fade-in
 const CARD_ANIMATION_MS = 1300;

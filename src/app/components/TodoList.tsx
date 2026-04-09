@@ -22,9 +22,9 @@ function PlusIcon({ themeMode }: { themeMode?: 'light' | 'dark' | 'color' }) {
 }
 
 const DEFAULT_TODOS: Todo[] = [
-  { id: '1', text: 'Finish Landler Cadastre', completed: false },
-  { id: '2', text: 'Add prototype', completed: false },
-  { id: '3', text: 'Play around with Cursor', completed: false },
+  { id: '1', text: 'Add new to-do', completed: false },
+  { id: '2', text: 'Select a different audio track', completed: false },
+  { id: '3', text: 'Explore watchfaces', completed: false },
 ];
 
 export function TodoList({ themeMode }: { themeMode?: 'light' | 'dark' | 'color' }) {
